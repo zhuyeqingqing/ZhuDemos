@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_min_tab_width">80dp</dimen>
+    <dimen name="common_dimens_80dp">80dp</dimen>
+    <dimen name="common_dimens_10dp">10dp</dimen>
+    <dimen name="common_dimens_8dp">8dp</dimen>
+</resources>
