@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ZhuDemos</string>
+    <string-array name="news_classifies">
+        <item>体育</item>
+        <item>财经</item>
+        <item>彩票</item>
+        <item>军事</item>
+        <item>国际</item>
+        <item>萨拉热窝</item>
+        <item>科技</item>
+        <item>疫情防控</item>
+        <item>Digital</item>
+        <item>Pendidikan</item>
+    </string-array>
 </resources>

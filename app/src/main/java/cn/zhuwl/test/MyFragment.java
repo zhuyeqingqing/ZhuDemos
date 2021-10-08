@@ -3,6 +3,7 @@ package cn.zhuwl.test;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import cn.zhuwl.test.R;
+import cn.zhuwl.test.tabview.TabActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -121,6 +124,7 @@ public class MyFragment extends Fragment {
         ImageView iv_2 = view.findViewById(R.id.iv_2);
         ImageView iv_3 = view.findViewById(R.id.iv_3);
         ImageView iv_4 = view.findViewById(R.id.iv_4);
+        Button bt_tab = view.findViewById(R.id.bt_tab);
         //content://media/external/images/media/731
 
         ///storage/emulated/0/Pictures/4a8a08f0-9d37-3737-9564-9038408b5f33_1629772623216.jpg
@@ -139,6 +143,13 @@ public class MyFragment extends Fragment {
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(iv_4);
         //getImagesInfo();
+        bt_tab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TabActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <cn.zhuwl.test.tabview.ScrollIndicatorView
+        android:id="@+id/fragment_home_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        tools:ignore="MissingClass" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#666666"/>
+
+    <cn.zhuwl.test.tabview.SolveConflictLayout
+        android:id="@+id/solve_conflict_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </cn.zhuwl.test.tabview.SolveConflictLayout>
+
+</LinearLayout>

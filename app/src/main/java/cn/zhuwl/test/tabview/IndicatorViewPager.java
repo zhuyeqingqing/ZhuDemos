@@ -15,30 +15,36 @@ limitations under the License.
  */
 package cn.zhuwl.test.tabview;
 
-import android.graphics.drawable.Drawable;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import java.util.List;
 
 /**
  * 将indicatorView，ViewPager联合使用
  */
 public class IndicatorViewPager {
     protected Indicator indicatorView;
-    protected ViewPager viewPager;
+    protected ViewPager2 viewPager;
     private IndicatorPagerAdapter adapter;
     protected OnIndicatorPageChangeListener onIndicatorPageChangeListener;
     private boolean anim = true;
+    public Activity mActivity;
+    public List<Fragment> mFragmentList;
 
-    public IndicatorViewPager(Indicator indicator, ViewPager viewPager) {
+    public IndicatorViewPager(Indicator indicator, ViewPager2 viewPager) {
         this(indicator, viewPager, true);
     }
 
-    public IndicatorViewPager(Indicator indicator, ViewPager viewPager, boolean indicatorClickable) {
+    public IndicatorViewPager(Indicator indicator, ViewPager2 viewPager, boolean indicatorClickable) {
         super();
         this.indicatorView = indicator;
         this.viewPager = viewPager;
@@ -56,19 +62,28 @@ public class IndicatorViewPager {
 
             @Override
             public void onItemSelected(View selectItemView, int select, int preSelect) {
-                if (viewPager instanceof SViewPager) {
-                    viewPager.setCurrentItem(select, ((SViewPager) viewPager).isCanScroll());
+                if (viewPager instanceof ViewPager2) {
+                    viewPager.setCurrentItem(select, false);
                 } else {
                     viewPager.setCurrentItem(select, anim);
                 }
+
             }
         });
     }
 
     protected void iniOnPageChangeListener() {
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                indicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+            }
+
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 indicatorView.setCurrentItem(position, true);
                 if (onIndicatorPageChangeListener != null) {
                     onIndicatorPageChangeListener.onIndicatorPageChange(indicatorView.getPreSelectItem(), position);
@@ -76,12 +91,8 @@ public class IndicatorViewPager {
             }
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                indicatorView.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            }
-
-            @Override
             public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
                 indicatorView.onPageScrollStateChanged(state);
             }
         });
@@ -166,27 +177,27 @@ public class IndicatorViewPager {
      *
      * @param marginPixels
      */
-    public void setPageMargin(int marginPixels) {
+   /* public void setPageMargin(int marginPixels) {
         viewPager.setPageMargin(marginPixels);
-    }
+    }*/
 
     /**
      * 设置page间的图片
      *
      * @param d
      */
-    public void setPageMarginDrawable(Drawable d) {
+  /*  public void setPageMarginDrawable(Drawable d) {
         viewPager.setPageMarginDrawable(d);
-    }
+    }*/
 
     /**
      * 设置page间的图片
      *
      * @param resId
      */
-    public void setPageMarginDrawable(int resId) {
+    /*public void setPageMarginDrawable(int resId) {
         viewPager.setPageMarginDrawable(resId);
-    }
+    }*/
 
     /**
      * 获取上一次选中的索引
@@ -218,7 +229,7 @@ public class IndicatorViewPager {
         return indicatorView;
     }
 
-    public ViewPager getViewPager() {
+    public ViewPager2 getViewPager() {
         return viewPager;
     }
 
@@ -244,7 +255,7 @@ public class IndicatorViewPager {
 
     public interface IndicatorPagerAdapter {
 
-        PagerAdapter getPagerAdapter();
+        RecyclerView.Adapter getPagerAdapter();
 
         Indicator.IndicatorAdapter getIndicatorAdapter();
 
@@ -263,126 +274,10 @@ public class IndicatorViewPager {
 
 
     /**
-     * viewpage 的每个页面是view的形式
-     */
-    public static abstract class IndicatorViewPagerAdapter extends LoopAdapter {
-
-        private boolean loop;
-
-        @Override
-        int getRealPosition(int position) {
-            if (getCount() == 0) {
-                return 0;
-            }
-            return position % getCount();
-        }
-
-
-        @Override
-        void setLoop(boolean loop) {
-            this.loop = loop;
-            indicatorAdapter.setIsLoop(loop);
-        }
-
-
-        private RecyclingPagerAdapter pagerAdapter = new RecyclingPagerAdapter() {
-
-            @Override
-            public int getCount() {
-                if (IndicatorViewPagerAdapter.this.getCount() == 0) {
-                    return 0;
-                }
-                if (loop) {
-                    return Integer.MAX_VALUE - 100;
-                }
-                return IndicatorViewPagerAdapter.this.getCount();
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup container) {
-                return IndicatorViewPagerAdapter.this.getViewForPage(getRealPosition(position), convertView, container);
-            }
-
-            @Override
-            public float getPageWidth(int position) {
-                return IndicatorViewPagerAdapter.this.getPageRatio(getRealPosition(position));
-            }
-
-            @Override
-            public int getItemPosition(Object object) {
-                return IndicatorViewPagerAdapter.this.getItemPosition(object);
-            }
-
-            @Override
-            public int getItemViewType(int position) {
-                return IndicatorViewPagerAdapter.this.getPageViewType(getRealPosition(position));
-            }
-
-            @Override
-            public int getViewTypeCount() {
-                return IndicatorViewPagerAdapter.this.getPageViewTypeCount();
-            }
-        };
-
-
-        private Indicator.IndicatorAdapter indicatorAdapter = new Indicator.IndicatorAdapter() {
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return IndicatorViewPagerAdapter.this.getViewForTab(position, convertView, parent);
-            }
-
-            @Override
-            public int getCount() {
-                return IndicatorViewPagerAdapter.this.getCount();
-            }
-        };
-
-        public int getItemPosition(Object object) {
-            return RecyclingPagerAdapter.POSITION_UNCHANGED;
-        }
-
-        public abstract int getCount();
-
-        public abstract View getViewForTab(int position, View convertView, ViewGroup container);
-
-        public abstract View getViewForPage(int position, View convertView, ViewGroup container);
-
-        public float getPageRatio(int position) {
-            return 1f;
-        }
-
-        public int getPageViewType(int position) {
-            return 0;
-        }
-
-        public int getPageViewTypeCount() {
-            return 1;
-        }
-
-        @Override
-        public void notifyDataSetChanged() {
-            indicatorAdapter.notifyDataSetChanged();
-            pagerAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public PagerAdapter getPagerAdapter() {
-            return pagerAdapter;
-        }
-
-        @Override
-        public Indicator.IndicatorAdapter getIndicatorAdapter() {
-            return indicatorAdapter;
-        }
-
-    }
-
-    /**
      * viewpage 的每个页面是Fragment的形式
      */
     public static abstract class IndicatorFragmentPagerAdapter extends LoopAdapter {
-        private FragmentListPageAdapter pagerAdapter;
+        private FragmentStateAdapter pagerAdapter;
         private boolean loop;
 
         @Override
@@ -397,12 +292,12 @@ public class IndicatorViewPager {
             indicatorAdapter.setIsLoop(loop);
         }
 
-        public IndicatorFragmentPagerAdapter(FragmentManager fragmentManager) {
+        public IndicatorFragmentPagerAdapter(FragmentManager fragmentManager,Fragment fragment) {
             super();
-            pagerAdapter = new FragmentListPageAdapter(fragmentManager) {
+            pagerAdapter = new FragmentStateAdapter(fragmentManager, fragment.getLifecycle()){
 
                 @Override
-                public int getCount() {
+                public int getItemCount() {
                     if (IndicatorFragmentPagerAdapter.this.getCount() == 0) {
                         return 0;
                     }
@@ -412,19 +307,10 @@ public class IndicatorViewPager {
                     return IndicatorFragmentPagerAdapter.this.getCount();
                 }
 
+                @NonNull
                 @Override
-                public Fragment getItem(int position) {
+                public Fragment createFragment(int position) {
                     return IndicatorFragmentPagerAdapter.this.getFragmentForPage(getRealPosition(position));
-                }
-
-                @Override
-                public float getPageWidth(int position) {
-                    return IndicatorFragmentPagerAdapter.this.getPageRatio(getRealPosition(position));
-                }
-
-                @Override
-                public int getItemPosition(Object object) {
-                    return IndicatorFragmentPagerAdapter.this.getItemPosition(object);
                 }
             };
         }
@@ -443,29 +329,6 @@ public class IndicatorViewPager {
 
         };
 
-        public int getItemPosition(Object object) {
-            return FragmentListPageAdapter.POSITION_UNCHANGED;
-        }
-
-        /**
-         * 获取position位置上的Fragment，Fragment没有被创建时返回null
-         *
-         * @param position
-         * @return 返回已经创建的position的Fragment，如果position位置的fragment没有创建返回null
-         */
-        public Fragment getExitFragment(int position) {
-            return pagerAdapter.getExitFragment(position);
-        }
-
-        /**
-         * 获取当前显示的Fragment
-         *
-         * @return 返回当前选中的fragment
-         */
-        public Fragment getCurrentFragment() {
-            return pagerAdapter.getCurrentFragment();
-        }
-
         public abstract int getCount();
 
         public abstract View getViewForTab(int position, View convertView, ViewGroup container);
@@ -483,7 +346,7 @@ public class IndicatorViewPager {
         }
 
         @Override
-        public PagerAdapter getPagerAdapter() {
+        public RecyclerView.Adapter getPagerAdapter() {
             return pagerAdapter;
         }
 
