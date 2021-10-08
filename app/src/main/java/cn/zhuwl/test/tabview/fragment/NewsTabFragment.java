@@ -32,8 +32,9 @@ public class NewsTabFragment extends TabBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab_news, container, false);
-        RecyclerView recyclerView = rootView.findViewById(R.id.news_tab_recycle);
+        RecyclerView recycler = rootView.findViewById(R.id.news_tab_recycle);
         //Todo
+
         return rootView;
 
     }
