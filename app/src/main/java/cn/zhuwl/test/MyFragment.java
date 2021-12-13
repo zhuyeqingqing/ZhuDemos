@@ -1,17 +1,11 @@
 package cn.zhuwl.test;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Images;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
-import cn.zhuwl.test.R;
-import cn.zhuwl.test.tabview.TabActivity;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import cn.zhuwl.test.Util.DeviceHelper;
+import cn.zhuwl.test.Util.DeviceUtil;
+import cn.zhuwl.test.tabview.TabActivity;
 
 public class MyFragment extends Fragment {
     private static final String DATA_URI =
@@ -112,7 +105,9 @@ public class MyFragment extends Fragment {
         } catch (IOException e){
             System.out.println(e);
         }
-
+        DeviceHelper.getDeviceId(getActivity());
+        DeviceUtil.getImieStatus(getActivity());
+        DeviceUtil.getAndroidId(getActivity());
     }
 
     @Nullable
@@ -125,6 +120,7 @@ public class MyFragment extends Fragment {
         ImageView iv_3 = view.findViewById(R.id.iv_3);
         ImageView iv_4 = view.findViewById(R.id.iv_4);
         Button bt_tab = view.findViewById(R.id.bt_tab);
+        Button hideIcon = view.findViewById(R.id.hide_icon);
         //content://media/external/images/media/731
 
         ///storage/emulated/0/Pictures/4a8a08f0-9d37-3737-9564-9038408b5f33_1629772623216.jpg
@@ -148,6 +144,16 @@ public class MyFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), TabActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        hideIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PackageManager packageManager = getActivity().getPackageManager();
+                ComponentName componentName = getActivity().getComponentName();
+                packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.DONT_KILL_APP);
             }
         });
         return view;

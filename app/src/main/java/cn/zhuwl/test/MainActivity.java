@@ -2,18 +2,27 @@ package cn.zhuwl.test;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 
 public class MainActivity extends FragmentActivity {
+    private static String[] TONGDUN_PERMISSION = new String[]
+            {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+            };
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,12 +42,37 @@ public class MainActivity extends FragmentActivity {
                         .commit();
             }
         } else {*/
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+        requestPermission();
         //}
+        //DeviceUtil.getImieStatus(this);
+        //DeviceUtil.getAndroidId(this);
 
 
 
+    }
 
+    private void requestPermission() {
+        if ((ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+                != PackageManager.PERMISSION_GRANTED)
+        ) { //判断是否已经赋予权限
+            ActivityCompat.requestPermissions(
+                    this, TONGDUN_PERMISSION, 1
+            );
+        }else{
+            FragmentManager fm = getSupportFragmentManager();
+            Fragment fg = new MyFragment();
+            fm.beginTransaction()
+                    .add(android.R.id.content, fg)
+                    .commit();
+        }
     }
 
     @Override

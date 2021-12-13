@@ -10,3 +10,4 @@ rootProject.name = "ZhuDemos"
 include ':app'
 include ':tabfragment'
 include ':login'
+include ':jetpack'
