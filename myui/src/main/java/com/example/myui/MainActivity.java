@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myui.activity.HuanhangActivity;
+import com.example.myui.activity.SanlieActivity;
 import com.example.myui.xuanfuwindow.service.FloatingButtonService;
 import com.example.myui.xuanfuwindow.service.FloatingImageDisplayService;
 import com.example.myui.xuanfuwindow.service.FloatingVideoService;
@@ -23,10 +25,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button xuanfu1 = findViewById(R.id.xuanfu1);
         Button xuanfu2 = findViewById(R.id.xuanfu2);
         Button xunafu3 = findViewById(R.id.xuanfu3);
+        Button huanhang = findViewById(R.id.huanhang);
+        Button sanlie = findViewById(R.id.sanlie);
 
         xuanfu1.setOnClickListener(this);
         xuanfu2.setOnClickListener(this);
         xunafu3.setOnClickListener(this);
+        huanhang.setOnClickListener(this);
+        sanlie.setOnClickListener(this);
     }
 
 
@@ -94,6 +100,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void startHuanhangActivity() {
+        Intent intent = new Intent(this, HuanhangActivity.class);
+        startActivity(intent);
+    }
+
+    public void startSanlieActivity() {
+        Intent intent = new Intent(this, SanlieActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -105,6 +121,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.xuanfu3:
                 startFloatingVideoService();
+                break;
+            case R.id.huanhang:
+                startHuanhangActivity();
+                break;
+            case R.id.sanlie:
+                startSanlieActivity();
                 break;
             default:
                 break;

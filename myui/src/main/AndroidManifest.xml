@@ -21,6 +21,22 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.HuanhangActivity"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.SanlieActivity"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <service android:name=".xuanfuwindow.service.FloatingButtonService"></service>
         <service android:name=".xuanfuwindow.service.FloatingImageDisplayService"></service>
         <service android:name=".xuanfuwindow.service.FloatingVideoService"></service>
