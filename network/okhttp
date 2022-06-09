@@ -1,0 +1,68 @@
+okhttp使用步骤
+1.引入:implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+2.申请权限：internet、写外存权限（如果需要配置 DiskLruCache）
+3.（1）异步get请求
+      -- new HttpClient 对象
+      -- 通过build 构造request对象
+      -- 通过前两个对象构建Call对象
+      -- 通过Call#enqueque(Callback)提交异步请求
+
+      例子：String url = "http://wwww.baidu.com";
+
+           OkHttpClient okHttpClient = new OkHttpClient();
+
+           final Request request = new Request.Builder()
+                 .url(url)
+                 .get()//默认就是GET请求，可以不写
+                 .build();
+
+          Call call = okHttpClient.newCall(request);
+
+          call.enqueue(new Callback() {
+             @Override
+             public void onFailure(Call call, IOException e) {
+                 Log.d(TAG, "onFailure: ");
+             }
+
+             @Override
+             public void onResponse(Call call, Response response) throws IOException {
+                 Log.d(TAG, "onResponse: " + response.body().string());
+             }
+         });
+
+        异步发起的请求会被加入到 Dispatcher 中的 RunningAsyncCalls 双端队列中，通过线程池来执行
+
+ （2）同步get请求
+     -- new HttpClient 对象
+     -- 通过build 构造request对象
+     -- 通过前两个对象构建Call对象
+     -- Call#execute() 执行同步请求，会阻塞调用线程
+
+     例子：String url = "http://wwww.baidu.com";
+
+          OkHttpClient okHttpClient = new OkHttpClient();
+
+          final Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+          final Call call = okHttpClient.newCall(request);
+
+          new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response response = call.execute();
+                    Log.d(TAG, "run: " + response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+          }).start();
+
+ （3）Post 请求
+      -- new HttpClient 对象
+      -- 定义RequestBody的MediaType
+      -- 创建RequestBody
+      -- 通过build, 传入requestbody、url等构造request对象
+      --
