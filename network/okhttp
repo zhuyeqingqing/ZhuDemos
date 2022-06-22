@@ -65,4 +65,5 @@ okhttp使用步骤
       -- 定义RequestBody的MediaType
       -- 创建RequestBody
       -- 通过build, 传入requestbody、url等构造request对象
-      --
+      -- 通过HttpClient对象和Request对象构建Call对象
+      -- Call#enqueque(Callback) 执行异步请求
