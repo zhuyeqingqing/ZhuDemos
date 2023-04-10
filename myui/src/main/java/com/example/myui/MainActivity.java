@@ -27,12 +27,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button xunafu3 = findViewById(R.id.xuanfu3);
         Button huanhang = findViewById(R.id.huanhang);
         Button sanlie = findViewById(R.id.sanlie);
+        Button recyclerview = findViewById(R.id.recycler_view);
 
         xuanfu1.setOnClickListener(this);
         xuanfu2.setOnClickListener(this);
         xunafu3.setOnClickListener(this);
         huanhang.setOnClickListener(this);
         sanlie.setOnClickListener(this);
+        recyclerview.setOnClickListener(this);
     }
 
 
@@ -127,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.sanlie:
                 startSanlieActivity();
+                break;
+            case R.id.recycler_view:
+                //CommonActivity.Companion.start(this, RefreshRclFragment.Companion.newInstance());
                 break;
             default:
                 break;
