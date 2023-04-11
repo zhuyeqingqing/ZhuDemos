@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beauty.basicui.rcl.fragments.RefreshRclFragment;
+import com.example.myui.activity.CommonActivity;
 import com.example.myui.activity.HuanhangActivity;
 import com.example.myui.activity.SanlieActivity;
 import com.example.myui.xuanfuwindow.service.FloatingButtonService;
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startSanlieActivity();
                 break;
             case R.id.recycler_view:
-                //CommonActivity.Companion.start(this, RefreshRclFragment.Companion.newInstance());
+                CommonActivity.Companion.start(this, RefreshRclFragment.Companion.newInstance());
                 break;
             default:
                 break;

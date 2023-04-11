@@ -5,12 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    compileSdkVersion 33
     defaultConfig {
         applicationId "cn.zhuwl.test"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -30,6 +29,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    lintOptions {
+        check 'kotlin'
+    }
 }
 
 dependencies {
@@ -37,8 +40,9 @@ dependencies {
     implementation rootProject.ext.dependencies["core_kotlin"]
     implementation rootProject.ext.dependencies["androidx_appcompat"]
     implementation rootProject.ext.dependencies["androidx_material"]
+    implementation rootProject.ext.dependencies['androidx_core']
 
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.0"
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
     /* implementation ("com.github.bumptech.glide:glide:4.4.0") {
          exclude group: "com.android.support"
@@ -53,7 +57,9 @@ dependencies {
 
     //resolutionStrategy.latestVersion()
 }
-
+/*configurations.all {
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+}*/
 /*
 project.rootProject.allprojects {
     configurations.all {

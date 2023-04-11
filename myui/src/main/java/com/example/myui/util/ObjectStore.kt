@@ -16,7 +16,7 @@ class ObjectStore {
         fun add(obj: Any?): String? {
             val key = UUID.randomUUID().toString()
             synchronized(mObjects) {
-                mObjects["key"] = obj
+                mObjects[key] = obj
                 return key
             }
         }
@@ -28,7 +28,7 @@ class ObjectStore {
         operator fun get(key: String?): Any? {
             var obj: Any? = null
             synchronized(mObjects) {
-                obj = mObjects.get(key)
+                obj = mObjects[key]
                 return obj
             }
         }

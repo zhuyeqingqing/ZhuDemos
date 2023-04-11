@@ -23,7 +23,7 @@ class CommonActivity : AppCompatActivity() {
                 return
             }
 
-            var intent : Intent = Intent(context, CommonActivity.javaClass)
+            var intent : Intent = Intent(context, CommonActivity::class.java)
             if(bundle != null){
                 intent.putExtras(bundle)
                 fragment.arguments = bundle

@@ -1,14 +1,15 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.example.myui"
-        minSdkVersion 25
-        targetSdkVersion 31
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -21,20 +22,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
-    implementation project(path: ':BasicUI')
+    implementation project(':BasicUI')
     implementation rootProject.ext.dependencies["androidx_appcompat"]
-    implementation rootProject.ext.dependencies['androidx_core']
-
+    implementation rootProject.ext.dependencies["core_kotlin"]
     implementation rootProject.ext.dependencies["androidx_material"]
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation rootProject.ext.dependencies["androidx_constraintlayout"]
+    implementation rootProject.ext.dependencies["androidx_navigation_fragment_ktx"]
+    implementation rootProject.ext.dependencies["androidx_navigation_ui_ktx"]
+    implementation rootProject.ext.dependencies["swipe_refresh"]
+    implementation rootProject.ext.dependencies["glide"]
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+//configurations.all {
+//    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+//}

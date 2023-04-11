@@ -5,6 +5,9 @@ ext{
         "core_kotlin" : "androidx.core:core-ktx:1.9.0",
         "androidx_core" : "androidx.core:core:1.9.0",
         "androidx_appcompat" : "androidx.appcompat:appcompat:1.6.1",
-        "androidx_material" : "com.google.android.material:material:1.4.0"
+        "androidx_material" : "com.google.android.material:material:1.6.0",
+        "androidx_constraintlayout" : "androidx.constraintlayout:constraintlayout:2.1.4",
+        "androidx_navigation_fragment_ktx" : "androidx.navigation:navigation-fragment-ktx:2.5.3",
+        "androidx_navigation_ui_ktx" : "androidx.navigation:navigation-ui-ktx:2.5.3"
     ]
 }
