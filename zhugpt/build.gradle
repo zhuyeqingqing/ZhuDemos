@@ -43,6 +43,14 @@ dependencies {
     implementation rootProject.ext.dependencies["swipe_refresh"]
     implementation rootProject.ext.dependencies["glide"]
 
+    implementation rootProject.ext.dependencies["retrofit"]
+    implementation rootProject.ext.dependencies["retrofit_gson"]
+    implementation rootProject.ext.dependencies["okhttp"]
+
+    implementation rootProject.ext.dependencies["rxjava"]
+    implementation rootProject.ext.dependencies["rxjava_rxandroid"]
+    implementation rootProject.ext.dependencies["retrofit2-rxjava2"]
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

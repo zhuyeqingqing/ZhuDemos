@@ -8,6 +8,13 @@ ext{
         "androidx_material" : "com.google.android.material:material:1.6.0",
         "androidx_constraintlayout" : "androidx.constraintlayout:constraintlayout:2.1.4",
         "androidx_navigation_fragment_ktx" : "androidx.navigation:navigation-fragment-ktx:2.5.3",
-        "androidx_navigation_ui_ktx" : "androidx.navigation:navigation-ui-ktx:2.5.3"
+        "androidx_navigation_ui_ktx" : "androidx.navigation:navigation-ui-ktx:2.5.3",
+
+        "retrofit" : "com.squareup.retrofit2:retrofit:2.9.0",
+        "retrofit_gson" : "com.squareup.retrofit2:converter-gson:2.9.0",
+        "okhttp" : "com.squareup.okhttp3:okhttp:4.9.1",
+        "rxjava" : "io.reactivex.rxjava2:rxjava:2.2.21",
+        "rxjava_rxandroid" : "io.reactivex.rxjava2:rxandroid:2.1.1",
+        "retrofit2-rxjava2" : "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0"
     ]
 }

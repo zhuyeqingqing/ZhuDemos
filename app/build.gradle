@@ -33,6 +33,10 @@ android {
     lintOptions {
         check 'kotlin'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
