@@ -13,14 +13,13 @@ import com.example.zhugpt.adapter.ChatAdapter
 import com.example.zhugpt.adapter.ModelsAdapter
 import com.example.zhugpt.bean.*
 import com.example.zhugpt.databinding.FragmentChatBinding
+import com.example.zhugpt.databinding.FragmentCompletionBinding
 import com.example.zhugpt.databinding.FragmentModelsBinding
 import com.example.zhugpt.net.NetInfoPresenter
 
 class CompletionFragment : Fragment() {
-    private lateinit var mBinding : FragmentChatBinding
-    private var mChatList = ArrayList<ChatItem>()
-    private var mMessages = ArrayList<Message>()
-    private var mSessionId = ""
+    private lateinit var mBinding : FragmentCompletionBinding
+    private var mCompletionList = ArrayList<ChatItem>()
 
     companion object{
         public fun newInstance() : CompletionFragment {
@@ -33,7 +32,7 @@ class CompletionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = FragmentChatBinding.inflate(inflater, container, false)
+        mBinding = FragmentCompletionBinding.inflate(inflater, container, false)
         return mBinding.root
     }
 
@@ -42,25 +41,23 @@ class CompletionFragment : Fragment() {
         var linearLayoutManager  = LinearLayoutManager(context)
 
         mBinding.rclChat.layoutManager = linearLayoutManager
-        mBinding.rclChat.adapter = ChatAdapter(mChatList)
+        mBinding.rclChat.adapter = ChatAdapter(mCompletionList)
         mBinding.btSure.setOnClickListener(this::startChat)
 
     }
 
     fun startChat(view: View){
-        mChatList.add(ChatItem(1, mBinding.etAsk.text.toString()))
-        mMessages.add(Message("user", mBinding.etAsk.text.toString()))
+        mCompletionList.add(ChatItem(1, mBinding.etAsk.text.toString()))
         (mBinding.rclChat.adapter as ChatAdapter).notifyDataSetChanged()
-        mBinding.rclChat.smoothScrollToPosition(mChatList.size)
+        mBinding.rclChat.smoothScrollToPosition(mCompletionList.size)
         hideKeyboard()
-        NetInfoPresenter.getInstance().functionChat(mSessionId, mMessages, object : NetInfoPresenter.NetFeedBack() {
+        NetInfoPresenter.getInstance().functionCompletion(object : NetInfoPresenter.NetFeedBack() {
             override fun doSuccess(`object`: Any?) {
-                if(`object` is ChatResponse){
-                    mMessages.add((`object` as ChatResponse).choices[0].message)
-                    var content = (`object` as ChatResponse).choices[0].message.content
-                    mChatList.add(ChatItem(0, content))
+                if(`object` is CompletionResponse){
+                    var content = (`object` as CompletionResponse).choices[0].text
+                    mCompletionList.add(ChatItem(0, content))
                     (mBinding.rclChat.adapter as ChatAdapter).notifyDataSetChanged()
-                    mBinding.rclChat.smoothScrollToPosition(mChatList.size - 1)
+                    mBinding.rclChat.smoothScrollToPosition(mCompletionList.size - 1)
                 }
             }
 

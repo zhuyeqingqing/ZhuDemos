@@ -1,9 +1,6 @@
 package com.example.zhugpt.net
 
-import com.example.zhugpt.bean.ChatRequestBody
-import com.example.zhugpt.bean.ChatResponse
-import com.example.zhugpt.bean.Model
-import com.example.zhugpt.bean.ModelApiObject
+import com.example.zhugpt.bean.*
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Single
@@ -19,6 +16,13 @@ import retrofit2.http.POST
 interface OpenAiApi {
     @GET("v1/models")
     fun getModels(@Header("Authorization") authorization: String?): Observable<Response<ModelApiObject>?>?
+
+
+    @POST("v1/completions")
+    fun getCompletion(
+        @Header("Authorization") authorization: String?,
+        @Body request: CompletionRequestBody?
+    ): Observable<Response<CompletionResponse>?>
 
     @POST("v1/chat/completions")
     fun getChatCompletion(

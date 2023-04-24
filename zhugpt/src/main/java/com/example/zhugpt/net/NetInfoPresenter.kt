@@ -1,7 +1,7 @@
 package com.example.zhugpt.net
 
 import android.util.Log
-import com.example.zhugpt.bean.ModelApiObject
+import com.example.zhugpt.bean.*
 import com.example.zhugpt.constant.UrlConstant
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -14,9 +14,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-import com.example.zhugpt.bean.ChatRequestBody
-import com.example.zhugpt.bean.ChatResponse
-import com.example.zhugpt.bean.Message
 import java.util.*
 
 
@@ -79,8 +76,42 @@ class NetInfoPresenter {
             })
     }
 
+    fun functionCompletion(feedBack: NetFeedBack, ask : String){
+        val request = CompletionRequestBody(
+            "text-davinci-003",
+            ask,700,0.5)
 
-    fun functionChat(sessionId : String, messages : ArrayList<Message>, feedBack: NetFeedBack, ask : String){
+
+
+        apiService.getCompletion(
+            "Bearer ${UrlConstant.MY_API_KEY}",
+            request
+        )?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : Observer<Response<CompletionResponse>?> {
+                override fun onSubscribe(d: Disposable) {
+                    // 进行订阅前的处理
+                    var aa = ""
+                }
+
+                override fun onError(e: Throwable) {
+                    // 处理请求错误
+                    var aa = ""
+                }
+
+                override fun onNext(t: Response<CompletionResponse>) {
+                    var chatResponse: CompletionResponse? = t.body() ?: return
+                    // 在这里处理API响应
+                    feedBack.doSuccess(chatResponse)
+                }
+
+                override fun onComplete() {
+                }
+            })
+    }
+
+
+    fun functionChat(sessionId : String, messages : ArrayList<Message>, feedBack: NetFeedBack){
         val request = ChatRequestBody(
             "gpt-3.5-turbo",
             messages)

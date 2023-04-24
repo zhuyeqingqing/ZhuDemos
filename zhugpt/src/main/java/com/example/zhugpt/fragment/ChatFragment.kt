@@ -67,7 +67,7 @@ class ChatFragment : Fragment() {
             override fun doFail() {
             }
 
-        }, mBinding.etAsk.text.toString())
+        })
 
         mBinding.etAsk.text.clear()
     }

@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mBinding.btModels.setOnClickListener(this::gotoModelPage);
-        mBinding.btChat.setOnClickListener(this::gotoCompletion);
+        mBinding.btCompletion.setOnClickListener(this::gotoCompletion);
         mBinding.btChat.setOnClickListener(this::gotoChatPage);
     }
 
