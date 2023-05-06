@@ -31,4 +31,10 @@ interface OpenAiApi {
         @Header("Authorization") authorization: String?,
         @Body request: EditRequestBody?
     ): Observable<Response<EditResponse>?>
+
+    @POST("v1/images/generations")
+    fun getImageGenerate(
+        @Header("Authorization") authorization: String?,
+        @Body request: ImageGenerateRequestBody?
+    ): Observable<Response<ImageResponse>?>
 }

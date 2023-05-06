@@ -183,6 +183,50 @@ class NetInfoPresenter {
     }
 
 
+    fun functionImageGenerate(num : Int?, sizeText: String, instruction: String, feedBack: NetFeedBack){
+        var imageNum = 1
+        if(num != null){
+            imageNum = num
+        }
+
+        var size = sizeText
+        if(sizeText == "" || sizeText == null){
+            size = "1024x1024"
+        }
+
+
+        val request = ImageGenerateRequestBody(
+            instruction,
+            imageNum,
+            size
+        )
+
+        apiService.getImageGenerate(
+            "Bearer ${UrlConstant.MY_API_KEY}",
+            request
+        )?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : Observer<Response<ImageResponse>?> {
+                override fun onSubscribe(d: Disposable) {
+                    // 进行订阅前的处理
+                }
+
+                override fun onError(e: Throwable) {
+                    // 处理请求错误
+                }
+
+                override fun onNext(t: Response<ImageResponse>) {
+                    var imageResponse: ImageResponse? = t.body() ?: return
+                    // 在这里处理API响应
+                    feedBack.doSuccess(imageResponse)
+                }
+
+                override fun onComplete() {
+                }
+            })
+    }
+
+
     abstract class NetFeedBack{
         open fun doSuccess(`object`: Any?){}
         open fun doFail(){}

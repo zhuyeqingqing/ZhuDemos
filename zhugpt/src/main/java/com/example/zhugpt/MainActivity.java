@@ -10,6 +10,7 @@ import com.example.zhugpt.databinding.ActivityMainBinding;
 import com.example.zhugpt.fragment.ChatFragment;
 import com.example.zhugpt.fragment.CompletionFragment;
 import com.example.zhugpt.fragment.EditFragment;
+import com.example.zhugpt.fragment.ImageFragment;
 import com.example.zhugpt.fragment.ModelsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.btCompletion.setOnClickListener(this::gotoCompletion);
         mBinding.btChat.setOnClickListener(this::gotoChatPage);
         mBinding.btEdit.setOnClickListener(this::gotoEditPage);
+        mBinding.btImage.setOnClickListener(this::gotoImagePage);
     }
 
     private void gotoModelPage(View view){
@@ -40,5 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void gotoEditPage(View view){
         CommonActivity.Companion.start(this, EditFragment.Companion.newInstance());
+    }
+
+    private void gotoImagePage(View view){
+        CommonActivity.Companion.start(this, ImageFragment.Companion.newInstance());
     }
 }
