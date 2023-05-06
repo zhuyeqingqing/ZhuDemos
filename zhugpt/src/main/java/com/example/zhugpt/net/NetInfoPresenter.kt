@@ -145,6 +145,44 @@ class NetInfoPresenter {
             })
     }
 
+
+    fun functionEdit(myText: String, instruction: String, feedBack: NetFeedBack){
+        var myInstruction = instruction
+        if(instruction == "" || instruction == null){
+            myInstruction = "Fix the spelling mistakes"
+        }
+        val request = EditRequestBody(
+            "text-davinci-edit-001",
+            myText,
+            myInstruction
+        )
+
+        apiService.getEdit(
+            "Bearer ${UrlConstant.MY_API_KEY}",
+            request
+        )?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : Observer<Response<EditResponse>?> {
+                override fun onSubscribe(d: Disposable) {
+                    // 进行订阅前的处理
+                }
+
+                override fun onError(e: Throwable) {
+                    // 处理请求错误
+                }
+
+                override fun onNext(t: Response<EditResponse>) {
+                    var editResponse: EditResponse? = t.body() ?: return
+                    // 在这里处理API响应
+                    feedBack.doSuccess(editResponse)
+                }
+
+                override fun onComplete() {
+                }
+            })
+    }
+
+
     abstract class NetFeedBack{
         open fun doSuccess(`object`: Any?){}
         open fun doFail(){}
