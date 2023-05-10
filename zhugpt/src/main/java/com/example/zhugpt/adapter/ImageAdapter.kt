@@ -7,10 +7,12 @@ import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.zhugpt.R
+import com.example.zhugpt.activity.CommonActivity
 import com.example.zhugpt.bean.ChatItem
 import com.example.zhugpt.databinding.ItemChatRightBinding
 import com.example.zhugpt.databinding.ItemImageLeftBinding
 import com.example.zhugpt.databinding.ItemModelsBinding
+import com.example.zhugpt.fragment.ImageScaleFragment
 
 class ImageAdapter(var context : Context, var chats : List<ChatItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -45,6 +47,13 @@ class ImageAdapter(var context : Context, var chats : List<ChatItem>) : Recycler
                     .load(chats[position].content) // 图片的 URL
                     .centerCrop() // 图片显示样式，此处为居中裁剪
                     .into(holder.binding.ivImage) // 显示图片的 ImageView
+                holder.binding.ivImage.setOnClickListener {
+                    CommonActivity.start(
+                        context,
+                        ImageScaleFragment.newInstance(chats[position].content),
+                        null
+                    )
+                }
             }
             is ChatRightViewHolder -> holder.binding.tvChatContentRight.text = chats[position].content
         }
