@@ -7,30 +7,38 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_ask"
+        app:layout_constraintBottom_toTopOf="@+id/et_prompt"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="50dp"
         android:id="@+id/rcl_edit"/>
 
     <EditText
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="50dp"
-        android:id="@+id/et_instruction"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:hint="修改规则"
-        app:layout_constraintRight_toLeftOf="@+id/bt_sure"
+        android:id="@+id/et_image_num"
+        android:hint="图片数"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_sure"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:id="@+id/et_size"
+        android:hint="图片大小"
+        app:layout_constraintLeft_toRightOf="@+id/et_image_num"
         app:layout_constraintBottom_toBottomOf="@+id/bt_sure"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         />
 
+
     <EditText
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:id="@+id/et_ask"
-        android:hint="原文"
-        app:layout_constraintLeft_toLeftOf="@+id/et_instruction"
-        app:layout_constraintRight_toRightOf="@+id/et_instruction"
+        android:id="@+id/et_prompt"
+        android:hint="图片描述"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bt_sure"
         />
 
@@ -43,5 +51,4 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="20dp"
         android:text="发送"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

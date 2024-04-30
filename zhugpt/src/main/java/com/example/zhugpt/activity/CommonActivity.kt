@@ -15,6 +15,7 @@ class CommonActivity : AppCompatActivity() {
     companion object {
         const val INTENT_KEY_FRAGMENT = "key_fragment"
         fun start(context : Context, fragment : Fragment){
+
             start(context, fragment, null)
         }
 

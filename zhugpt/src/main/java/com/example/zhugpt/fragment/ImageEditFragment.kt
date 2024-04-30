@@ -9,9 +9,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.zhugpt.adapter.ChatAdapter
+import com.example.zhugpt.adapter.ImageAdapter
 import com.example.zhugpt.bean.*
 import com.example.zhugpt.databinding.*
 import com.example.zhugpt.net.NetInfoPresenter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class ImageEditFragment : Fragment() {
     private lateinit var mBinding : FragmentImageEditBinding
@@ -37,37 +41,66 @@ class ImageEditFragment : Fragment() {
         var linearLayoutManager  = LinearLayoutManager(context)
 
         mBinding.rclEdit.layoutManager = linearLayoutManager
-        mBinding.rclEdit.adapter = ChatAdapter(mChatList)
-        mBinding.btSure.setOnClickListener(this::startChat)
+        mBinding.rclEdit.adapter = activity?.let { ImageAdapter(it, mChatList) }
+        mBinding.btSure.setOnClickListener(this::startGetImage)
+
+        Thread(Runnable { // 获取目标文件的路径
+            val targetFilePath = context?.filesDir?.path + File.separator + "image.png"
+
+// 创建目标文件
+            val targetFile = File(targetFilePath)
+
+// 检查目标文件是否已存在
+            if (!targetFile.exists()) {
+                // 打开 assets 中的图片文件
+                val inputStream: InputStream = context?.assets!!.open("168328482329003_P21810815.webp")
+
+                // 将输入流写入目标文件
+                FileOutputStream(targetFile).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+
+                // 关闭输入流
+                inputStream.close()
+            }
+     }).start()
 
     }
 
-    fun startChat(view: View){
-        mChatList.add(ChatItem(1, mBinding.etAsk.text.toString()))
-        (mBinding.rclEdit.adapter as ChatAdapter).notifyDataSetChanged()
+    private fun startGetImage(view: View){
+        mChatList.add(ChatItem(1, mBinding.etPrompt.text.toString()))
+        (mBinding.rclEdit.adapter as ImageAdapter).notifyDataSetChanged()
         mBinding.rclEdit.smoothScrollToPosition(mChatList.size)
         hideKeyboard()
-        NetInfoPresenter.getInstance().functionEdit(mBinding.etAsk.text.toString(), mBinding.etInstruction.text.toString(), object : NetInfoPresenter.NetFeedBack() {
-            override fun doSuccess(`object`: Any?) {
-                if(`object` is EditResponse){
-                    var content = (`object` as EditResponse).choices[0].text
-                    mChatList.add(ChatItem(0, content))
-                    (mBinding.rclEdit.adapter as ChatAdapter).notifyDataSetChanged()
-                    mBinding.rclEdit.smoothScrollToPosition(mChatList.size - 1)
-                }
-            }
+        context?.let {
+            NetInfoPresenter.getInstance().functionImageEdit(
+                it, mBinding.etImageNum.text.toString().toIntOrNull(),
+                mBinding.etSize.text.toString(), mBinding.etPrompt.text.toString(), object : NetInfoPresenter.NetFeedBack() {
+                    override fun doSuccess(`object`: Any?) {
+                        if(`object` is ImageResponse){
+                            var images = (`object` as ImageResponse).data
+                            if (images != null && images.size > 0){
+                                for (image in images){
+                                    mChatList.add(ChatItem(0, image.url))
+                                }
+                                (mBinding.rclEdit.adapter as ImageAdapter).notifyDataSetChanged()
+                                mBinding.rclEdit.smoothScrollToPosition(mChatList.size - 1)
+                            }
+                        }
+                    }
 
-            override fun doFail() {
-            }
+                    override fun doFail() {
+                    }
 
-        })
+                })
+        }
 
-        mBinding.etAsk.text.clear()
+        mBinding.etPrompt.text.clear()
     }
 
 
     fun hideKeyboard() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(mBinding.etAsk.windowToken, 0)
+        imm.hideSoftInputFromWindow(mBinding.etPrompt.windowToken, 0)
     }
 }

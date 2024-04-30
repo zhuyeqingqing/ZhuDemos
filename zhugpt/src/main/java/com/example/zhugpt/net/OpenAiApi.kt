@@ -2,10 +2,8 @@ package com.example.zhugpt.net
 
 import com.example.zhugpt.bean.*
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.Single
-import okhttp3.ResponseBody
-import retrofit2.Call
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -37,4 +35,15 @@ interface OpenAiApi {
         @Header("Authorization") authorization: String?,
         @Body request: ImageGenerateRequestBody?
     ): Observable<Response<ImageResponse>?>
+
+    @Multipart
+    @POST("v1/images/edits")
+    fun createImageEdit(
+        @Header("Authorization") apiKey: String,
+        @Part image: MultipartBody.Part,
+        @Part mask: MultipartBody.Part?,
+        @Part("prompt") prompt: RequestBody,
+        @Part("n") n: RequestBody,
+        @Part("size") size: RequestBody
+    ): Observable<Response<ImageResponse>>
 }
